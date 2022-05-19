@@ -11,8 +11,8 @@ import {
     changeTodolistTitleAC,
     removeTodolistAC,
     todolistsReducer
-} from "./state/todolists-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./state/tasks-reducer";
+} from './state/todolists-reducer';
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './state/tasks-reducer';
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type TodolistType = {
@@ -26,7 +26,7 @@ export type TasksStateType = {
 }
 
 
-function App() {
+function AppWithReducers() {
     let todolistId1 = v1();
     let todolistId2 = v1();
 
@@ -46,48 +46,46 @@ function App() {
         ]
     });
 
-
     function removeTask(id: string, todolistId: string) {
-        const action = removeTaskAC(id, todolistId)
-        dispatchToTasks(action)
+        const action = removeTaskAC(id, todolistId);
+        dispatchToTasks(action);
     }
 
     function addTask(title: string, todolistId: string) {
-        const action = addTaskAC(title, todolistId)
-        dispatchToTasks(action)
+        const action = addTaskAC(title, todolistId);
+        dispatchToTasks(action);
     }
 
     function changeStatus(id: string, isDone: boolean, todolistId: string) {
-        const action = changeTaskStatusAC(id, isDone, todolistId)
-        dispatchToTasks(action)
+        const action = changeTaskStatusAC(id, isDone, todolistId);
+        dispatchToTasks(action);
     }
 
     function changeTaskTitle(id: string, newTitle: string, todolistId: string) {
-        const action = changeTaskTitleAC(id, newTitle, todolistId)
-        dispatchToTasks(action)
+        const action = changeTaskTitleAC(id, newTitle, todolistId);
+        dispatchToTasks(action);
     }
 
-
     function changeFilter(value: FilterValuesType, todolistId: string) {
-        const action = changeTodolistFilterAC(todolistId, value)
-        dispatchToTodolists(action)
+        const action = changeTodolistFilterAC(todolistId, value);
+        dispatchToTodolists(action);
     }
 
     function removeTodolist(id: string) {
-        const action = removeTodolistAC(id)
-        dispatchToTasks(action)
-        dispatchToTodolists(action)
+        const action = removeTodolistAC(id);
+        dispatchToTasks(action);
+        dispatchToTodolists(action);
     }
 
     function changeTodolistTitle(id: string, title: string) {
-        const action = changeTodolistTitleAC(id, title)
-        dispatchToTodolists(action)
+        const action = changeTodolistTitleAC(id, title);
+        dispatchToTodolists(action);
     }
 
     function addTodolist(title: string) {
-        const action = addTodolistAC(title)
-        dispatchToTasks(action)
-        dispatchToTodolists(action)
+        const action = addTodolistAC(title);
+        dispatchToTasks(action);
+        dispatchToTodolists(action);
     }
 
     return (
@@ -146,4 +144,4 @@ function App() {
     );
 }
 
-export default App;
+export default AppWithReducers;
