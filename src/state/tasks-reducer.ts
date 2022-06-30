@@ -1,8 +1,9 @@
 import {TasksStateType} from '../App';
 import {v1} from 'uuid';
 import {AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType} from './todolists-reducer';
-import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI} from '../api/todolists-api';
+import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType} from '../api/todolists-api';
 import {Dispatch} from 'redux';
+import {AppRootStateType} from './store';
 
 export type RemoveTaskActionType = {
     type: 'REMOVE-TASK',
@@ -75,7 +76,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
         }
         case 'ADD-TASK': {
             const stateCopy = {...state};
-            const newTask: TaskType = action.task
+            const newTask: TaskType = action.task;
             const tasks = stateCopy[action.task.todoListId];
             const newTasks = [newTask, ...tasks];
             stateCopy[action.task.todoListId] = newTasks;
@@ -166,6 +167,30 @@ export const addTaskTC = (todolistId: string, title: string) => {
             .then((res) => {
                 dispatch(addTaskAC(res.data.data.item));
             });
+    };
+};
+
+export const updateTaskStatusTC = (todolistId: string, taskId: string, status: TaskStatuses) => {
+    return (dispatch: Dispatch, getState: () => AppRootStateType) => {
+
+        const allTasksFromState = getState().tasks;
+        const tasksForCurrentTodolist = allTasksFromState[todolistId];
+        const task = tasksForCurrentTodolist.find(t => t.id === taskId);
+
+        if (task) {
+            todolistsAPI.updateTask(todolistId, taskId, {
+                title: task.title,
+                startDate: task.startDate,
+                priority: task.priority,
+                description: task.description,
+                deadline: task.deadline,
+                status: status,
+            })
+                .then(() => {
+                    const action = changeTaskStatusAC(taskId, status, todolistId);
+                    dispatch(action);
+                });
+        }
     };
 };
 
