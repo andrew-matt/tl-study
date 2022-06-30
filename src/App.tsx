@@ -20,7 +20,7 @@ import {
     removeTodolistAC,
     TodolistDomainType,
 } from './state/todolists-reducer';
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from './state/tasks-reducer';
+import {addTaskTC, changeTaskStatusAC, changeTaskTitleAC, removeTaskTC} from './state/tasks-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from './state/store';
 import {TaskStatuses, TaskType} from './api/todolists-api';
@@ -34,21 +34,21 @@ export type TasksStateType = {
 function App() {
 
     useEffect(() => {
-        dispatch(fetchTodolistsTC())
+        dispatch(fetchTodolistsTC());
     }, []);
 
-    const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
-    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+    const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists);
+    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks);
     const dispatch = useDispatch();
 
-    const removeTask = useCallback(function (id: string, todolistId: string) {
-        const action = removeTaskAC(id, todolistId);
-        dispatch(action);
+    const removeTask = useCallback(function (taskId: string, todolistId: string) {
+        const thunk = removeTaskTC(todolistId, taskId);
+        dispatch(thunk);
     }, []);
 
     const addTask = useCallback(function (title: string, todolistId: string) {
-        const action = addTaskAC(title, todolistId);
-        dispatch(action);
+        const thunk = addTaskTC(todolistId, title);
+        dispatch(thunk);
     }, []);
 
     const changeStatus = useCallback(function (id: string, status: TaskStatuses, todolistId: string) {
@@ -119,7 +119,7 @@ function App() {
                                         changeTodolistTitle={changeTodolistTitle}
                                     />
                                 </Paper>
-                            </Grid>
+                            </Grid>;
                         })
                     }
                 </Grid>
