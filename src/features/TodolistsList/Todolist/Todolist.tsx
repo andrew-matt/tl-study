@@ -24,7 +24,7 @@ type PropsType = {
     removeTodolist: (id: string) => void
     changeTodolistTitle: (id: string, newTitle: string) => void
     filter: FilterValuesType
-    entityStatus: RequestStatusType
+    todolistEntityStatus: RequestStatusType
 }
 
 export const Todolist = React.memo(function (props: PropsType) {
@@ -62,18 +62,20 @@ export const Todolist = React.memo(function (props: PropsType) {
     }
 
     return <div>
-        <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}/>
-            <IconButton onClick={removeTodolist} disabled={props.entityStatus === 'loading'}>
+        <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}
+                          disabled={props.todolistEntityStatus === 'loading'}/>
+            <IconButton onClick={removeTodolist} disabled={props.todolistEntityStatus === 'loading'}>
                 <Delete/>
             </IconButton>
         </h3>
-        <AddItemForm addItem={addTask} disabled={props.entityStatus === 'loading'}/>
+        <AddItemForm addItem={addTask} disabled={props.todolistEntityStatus === 'loading'}/>
         <div>
             {
                 tasksForTodolist.map(t => <Task key={t.id} task={t} todolistId={props.id}
                                                 removeTask={props.removeTask}
                                                 changeTaskTitle={props.changeTaskTitle}
                                                 changeTaskStatus={props.changeTaskStatus}
+                                                todolistEntityStatus={props.todolistEntityStatus}
                 />)
             }
         </div>
@@ -81,15 +83,20 @@ export const Todolist = React.memo(function (props: PropsType) {
             <Button variant={props.filter === 'all' ? 'outlined' : 'text'}
                     onClick={onAllClickHandler}
                     color={'inherit'}
+                    disabled={props.todolistEntityStatus === 'loading'}
             >All
             </Button>
             <Button variant={props.filter === 'active' ? 'outlined' : 'text'}
                     onClick={onActiveClickHandler}
-                    color={'primary'}>Active
+                    color={'primary'}
+                    disabled={props.todolistEntityStatus === 'loading'}
+            >Active
             </Button>
             <Button variant={props.filter === 'completed' ? 'outlined' : 'text'}
                     onClick={onCompletedClickHandler}
-                    color={'secondary'}>Completed
+                    color={'secondary'}
+                    disabled={props.todolistEntityStatus === 'loading'}
+            >Completed
             </Button>
         </div>
     </div>;
