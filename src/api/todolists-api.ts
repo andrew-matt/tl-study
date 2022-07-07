@@ -1,12 +1,13 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, {AxiosResponse} from 'axios';
+import {RequestStatusType} from '../app/app-reducer';
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
     headers: {
-        'API-KEY': 'ba20e791-30f7-4ca9-a0a3-61abf10b8541'
-    }
-})
+        'API-KEY': 'ba20e791-30f7-4ca9-a0a3-61abf10b8541',
+    },
+});
 
 // api
 export const todolistsAPI = {
@@ -33,8 +34,8 @@ export const todolistsAPI = {
     },
     updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
         return instance.put<UpdateTaskModelType, AxiosResponse<ResponseType<{ item: TaskType }>>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
-    }
-}
+    },
+};
 
 // types
 export type TodolistType = {
@@ -77,6 +78,7 @@ export type TaskType = {
     todoListId: string
     order: number
     addedDate: string
+    entityStatus: RequestStatusType
 }
 export type UpdateTaskModelType = {
     title: string
