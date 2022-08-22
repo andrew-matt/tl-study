@@ -48,7 +48,6 @@ export const Login = () => {
             return errors;
         },
         onSubmit: values => {
-            // alert(JSON.stringify(values));
             formik.resetForm();
             dispatch(loginTC(values));
         },
